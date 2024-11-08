@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imprimir Etiquetas</title>
+</head>
+<body>
+
+<h1>Imprimir Etiquetas</h1>
+
+<form action="{% url 'imprimir_etiquetas' %}" method="POST">
+    {% csrf_token %}
+    <label for="intervalos">Digite os intervalos de números ou números individuais (ex: 75-89, 91-101, 75):</label><br>
+    <input type="text" id="intervalos" name="intervalos" required><br><br>
+    
+    <button type="submit">Visualizar Etiquetas</button>
+</form>
+
+<ul>
+    {% for leitor in leitores %}
+        <li>
+            {{ leitor.nome }} {{ leitor.apelido }} ({{ leitor.numero_leitor }})
+            <a href="{% url 'visualizar_etiqueta' leitor.numero_leitor %}">Visualizar Etiqueta</a>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

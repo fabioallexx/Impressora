@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pré-Visualização da Etiqueta</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        .label-container {
+            width: 200px;  /* 5 cm */
+            height: 100px; /* 2.5 cm */
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .label-header {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .label-info {
+            font-size: 12px;
+        }
+        .barcode {
+            margin-top: 10px;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Pré-Visualização da Etiqueta</h1>
+
+<div class="label-container">
+    <div class="label-header">
+        {{ leitor.nome }} {{ leitor.apelido }}
+    </div>
+    <div class="label-info">
+        <p>Codigo: {{ leitor.numero_leitor }}</p>
+    </div>
+    <div class="barcode">
+        <svg id="barcode"></svg>
+    </div>
+</div>
+
+<div class="buttons">
+    <form action="{% url 'imprimir_etiqueta' leitor.numero_leitor %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirmar">Confirmar Impressão</button>
+    </form>
+    
+    <br>
+
+    <a href="{% url 'lista_leitores' %}">
+        <button type="button">Cancelar</button>
+    </a>
+</div>
+
+<script>
+    JsBarcode("#barcode", "{{ leitor.numero_leitor }}", {
+        format: "CODE128",   // Formato do código de barras
+        width: 2,            // Largura dos elementos do código
+        height: 100,         // Altura do código de barras
+    });
+</script>
+
+</body>
+</html>
